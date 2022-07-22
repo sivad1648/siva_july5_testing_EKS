@@ -39,3 +39,12 @@ variable "instances" {
 
 }
 
+variable "subnet_id_1" {
+  description = "The private subnet name"
+  default = "subnet-082f55d47ff8b1b8d"
+}
+
+variable "subnet_id_2" {
+  description = "The other subnet name"
+  default = "subnet-096aff563e700ddd9"
+}
