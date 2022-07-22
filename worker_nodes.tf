@@ -21,16 +21,27 @@ resource "aws_eks_node_group" "my-worker-node-group" {
   ]
 }
 
-#EKS can't directly set the "Name" tag, so we use the autoscaling_group_tag resource. 
-resource "aws_autoscaling_group_tag" "my-worker-node-group" {
+#EKS can't directly set the "Name" tag, so we use the autoscaling_group_tag resource.
+resource "aws_autoscaling_group_tag" "tag" {
+  for_each = local.asg_tags
+  autoscaling_group_name = module.eks_cluster.node_groups[split("_",each.key)[0]].resources[0].autoscaling_groups[0].name
+
+  tag {
+    key   = each.value.key
+    value = each.value.value
+    propagate_at_launch = each.value.propagate_at_launch
+  }
+}
+
+/*resource "aws_autoscaling_group_tag" "my-worker-node-group" {
   for_each = toset(
     [for asg in flatten(
       [for resources in aws_eks_node_group.my-worker-node-group.resources : resources.autoscaling_groups]
     ) : asg.name]
   )
 
-  #autoscaling_group_name = each.value
-  autoscaling_group_name = "${var.node_group_name}".value
+  autoscaling_group_name = each.value
+  #autoscaling_group_name = "${var.node_group_name}".value
 
   tag {
     key   = "Name"
@@ -46,4 +57,4 @@ resource "aws_autoscaling_group_tag" "my-worker-node-group" {
     aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
 
   ]
-}
+}*/
