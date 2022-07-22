@@ -33,9 +33,9 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
-variable "instance_ami" {
-  default = "ami-02f3416038bdb17fb"
-}
+#variable "instance_ami" {
+#  default = "ami-02f3416038bdb17fb"
+#}
 
 #variable "instances" {
 
