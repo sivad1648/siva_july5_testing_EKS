@@ -37,11 +37,11 @@ variable "instance_ami" {
   default = "ami-02f3416038bdb17fb"
 }
 
-variable "instances" {
+#variable "instances" {
 
-  default = "3"
+#  default = "3"
 
-}
+#}
 
 variable "subnet_id_1" {
   description = "The private subnet name"

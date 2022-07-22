@@ -5,12 +5,12 @@ resource "aws_eks_node_group" "my-worker-node-group" {
   subnet_ids      = [var.subnet_id_1, var.subnet_id_2]
   instance_types   = [var.instance_type]
   ami_type =      "${var.instance_ami}"
-  count           = "${var.instances}"
+  #count           = "${var.instances}"
 
 
   scaling_config {
-    desired_size = 2
-    max_size     = 3
+    desired_size = 3
+    max_size     = 5
     min_size     = 1
   }
 
