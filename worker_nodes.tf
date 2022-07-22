@@ -24,7 +24,7 @@ resource "aws_eks_node_group" "my-worker-node-group" {
 #EKS can't directly set the "Name" tag, so we use the autoscaling_group_tag resource.
 resource "aws_autoscaling_group_tag" "tag" {
   for_each = local.asg_tags
-  autoscaling_group_name = module.eks_cluster.node_groups[split("_",each.key)[0]].resources[0].autoscaling_groups[0].name
+  autoscaling_group_name = module.eks_cluster.my-worker-node-group[split("_",each.key)[0]].resources[0].autoscaling_groups[0].name
 
   tag {
     key   = each.value.key
