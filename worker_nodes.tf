@@ -29,7 +29,8 @@ resource "aws_autoscaling_group_tag" "my-worker-node-group" {
     ) : asg.name]
   )
 
-  autoscaling_group_name = each.value
+  #autoscaling_group_name = each.value
+  autoscaling_group_name = "${var.node_group_name}".value
 
   tag {
     key   = "Name"
