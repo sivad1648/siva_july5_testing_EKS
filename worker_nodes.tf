@@ -38,6 +38,8 @@ resource "aws_autoscaling_group_tag" "my-worker-node-group" {
   }
 
   depends_on = [
-    scaling_config
+    aws_iam_role_policy_attachment.AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.AmazonEKS_CNI_Policy,
+    aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
   ]
 }
