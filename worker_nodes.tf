@@ -22,16 +22,6 @@ resource "aws_eks_node_group" "my-worker-node-group" {
 }
 
 #EKS can't directly set the "Name" tag, so we use the autoscaling_group_tag resource.
-resource "aws_autoscaling_group_tag" "tag" {
-  for_each = local.asg_tags
-  autoscaling_group_name = module.eks_cluster.my-worker-node-group[split("_",each.key)[0]].resources[0].autoscaling_groups[0].name
-
-  tag {
-    key   = each.value.key
-    value = each.value.value
-    propagate_at_launch = each.value.propagate_at_launch
-  }
-}
 
 /*resource "aws_autoscaling_group_tag" "my-worker-node-group" {
   for_each = toset(
@@ -57,4 +47,32 @@ resource "aws_autoscaling_group_tag" "tag" {
     aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
 
   ]
+}*/
+
+/*
+locals{
+...
+  asg_tag_list = flatten([
+      for node_group_key, node_group in var.node_groups: [
+        for tag in lookup(node_group, "asg_tags", []): {
+          node_group_key = node_group_key
+          key = tag.key
+          value = tag.value
+          propagate_at_launch = tag.propagate_at_launch
+        }
+      ]
+    ])
+...
+}
+
+resource "aws_autoscaling_group_tag" "tag" {
+  count = length(local.asg_tag_list)
+
+  autoscaling_group_name = module.eks.node_groups[local.asg_tag_list[count.index].node_group_key].resources[0].autoscaling_groups[0].name
+
+  tag {
+    key   = local.asg_tag_list[count.index].key
+    value = local.asg_tag_list[count.index].value
+    propagate_at_launch = local.asg_tag_list[count.index].propagate_at_launch
+  }
 }*/
