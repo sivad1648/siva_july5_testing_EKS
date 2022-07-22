@@ -19,3 +19,20 @@ resource "aws_eks_node_group" "my-worker-node-group" {
     aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
   ]
 }
+
+#EKS can't directly set the "Name" tag, so we use the autoscaling_group_tag resource. 
+resource "aws_autoscaling_group_tag" "nodes_group" {
+  for_each = toset(
+    [for asg in flatten(
+      [for resources in aws_eks_node_group.nodes_group.resources : resources.autoscaling_groups]
+    ) : asg.name]
+  )
+
+  autoscaling_group_name = each.value
+
+  tag {
+    key   = "Name"
+    value = "eks_node_group"
+    propagate_at_launch = true
+  }
+}
