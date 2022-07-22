@@ -4,6 +4,7 @@ resource "aws_eks_node_group" "my-worker-node-group" {
   node_role_arn   = aws_iam_role.My_worker_nodes.arn
   subnet_ids      = [var.subnet_id_1, var.subnet_id_2]
   instance_types   = [var.instance_type]
+  instance_ami    = "${var.instance_ami}"
   count           = "${var.instances}"
 
 
