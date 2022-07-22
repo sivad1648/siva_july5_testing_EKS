@@ -38,6 +38,6 @@ resource "aws_autoscaling_group_tag" "my-worker-node-group" {
   }
 
   depends_on = [
-    aws_eks_node_group.my-worker-node-group
+    aws_eks_cluster.eks_cluster.name
   ]
 }
