@@ -36,4 +36,8 @@ resource "aws_autoscaling_group_tag" "my-worker-node-group" {
     value = "eks_node_group"
     propagate_at_launch = true
   }
+
+  depends_on = [
+    scaling_config
+  ]
 }
