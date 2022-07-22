@@ -34,7 +34,7 @@ variable "instance_type" {
 }
 
 variable "instance_ami" {
-  deafult = "ami-02f3416038bdb17fb"
+  default = "ami-02f3416038bdb17fb"
 }
 
 variable "instances" {
